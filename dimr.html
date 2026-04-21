@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <title>The DUMR Countdown - Days Until Mikey Returns</title>
+
+  <style>
+    :root {
+      --bg-normal: #0b132b;
+      --bg-urgent: #2b0b0b;
+      --text-normal: #ffffff;
+      --text-urgent: #ff4d4d;
+    }
+
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg-normal);
+      color: var(--text-normal);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      transition: background 1s ease;
+    }
+
+    .container {
+      padding: 40px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 6vw;
+      margin-bottom: 6vh;
+      text-transform: uppercase;
+      letter-spacing: 0.4vw;
+    }
+
+    .countdown {
+      font-size: 10vw;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .label {
+      margin-top: 5vh;
+      font-size: 3.5vw;
+      opacity: 0.85;
+    }
+
+    /* FINAL 24 HOURS DRAMA */
+    .urgent {
+      background: var(--bg-urgent);
+    }
+
+    .urgent .countdown {
+      color: var(--text-urgent);
+      animation: pulse 1s infinite alternate;
+    }
+
+    .urgent .container {
+      animation: screenPulse 4s infinite;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    @keyframes screenPulse {
+      0% { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
+      50% { box-shadow: inset 0 0 120px rgba(255,0,0,0.25); }
+      100% { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>The DUMR Countdown</h1>
+
+    <div class="countdown" id="countdown">
+      Calculating…
+    </div>
+
+    <div class="label">
+      Days Until Mikey Returns
+    </div>
+  </div>
+
+  <script>
+    // Target: 28 April 2026, 9:00 AM Sydney time
+    const targetDate = new Date('2026-04-28T09:00:00+10:00');
+    const dayMs = 1000 * 60 * 60 * 24;
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      const countdownEl = document.getElementById('countdown');
+
+      if (diff <= 0) {
+        document.body.classList.remove('urgent');
+        countdownEl.textContent = '🎉 MIKEY IS BACK 🎉';
+        return;
+      }
+
+      // Switch to dramatic mode in final 24 hours
+      if (diff <= dayMs) {
+        document.body.classList.add('urgent');
+      }
+
+      const days = Math.floor(diff / dayMs);
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      if (days > 0) {
+        countdownEl.textContent = `${days} DAYS`;
+      } else {
+        countdownEl.textContent =
+          `${hours}h ${minutes}m ${seconds}s`;
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
