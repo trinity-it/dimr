@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
-  <title>The DUMR Countdown</title>
+  <title>The DUMR Countdown – Until He Returns</title>
 
   <style>
     :root {
@@ -28,8 +28,8 @@
     }
 
     .container {
-      padding: 40px;
       width: 100%;
+      padding: 4vh;
     }
 
     h1 {
@@ -40,9 +40,9 @@
     }
 
     .countdown {
-      font-size: 10vw;
+      font-size: 9vw;
       font-weight: 900;
-      line-height: 1.1;
+      line-height: 1.2;
     }
 
     .label {
@@ -51,7 +51,7 @@
       opacity: 0.85;
     }
 
-    /* FINAL 24 HOURS DRAMA */
+    /* FINAL 24 HOURS – DRAMATIC MODE */
     .urgent {
       background: var(--bg-urgent);
     }
@@ -71,8 +71,8 @@
     }
 
     @keyframes screenPulse {
-      0% { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
-      50% { box-shadow: inset 0 0 120px rgba(255,0,0,0.25); }
+      0%   { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
+      50%  { box-shadow: inset 0 0 140px rgba(255,0,0,0.25); }
       100% { box-shadow: inset 0 0 0 rgba(0,0,0,0); }
     }
   </style>
@@ -87,43 +87,38 @@
     </div>
 
     <div class="label">
-      Until The Returns
+      Time Until He Returns
     </div>
   </div>
 
   <script>
-    // Target: 28 April 2026, 9:00 AM Sydney time
+    // Target: 28 April 2026, 9:00 AM (Sydney time)
     const targetDate = new Date('2026-04-28T09:00:00+10:00');
-    const dayMs = 1000 * 60 * 60 * 24;
+    const oneDay = 1000 * 60 * 60 * 24;
 
     function updateCountdown() {
       const now = new Date();
       const diff = targetDate - now;
-
       const countdownEl = document.getElementById('countdown');
 
       if (diff <= 0) {
         document.body.classList.remove('urgent');
-        countdownEl.textContent = '🎉 HE'S BACK 🎉';
+        countdownEl.textContent = '🎉 HE HAS RETURNED 🎉';
         return;
       }
 
-      // Switch to dramatic mode in final 24 hours
-      if (diff <= dayMs) {
+      // Activate dramatic mode in final 24 hours
+      if (diff <= oneDay) {
         document.body.classList.add('urgent');
       }
 
-      const days = Math.floor(diff / dayMs);
+      const days = Math.floor(diff / oneDay);
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
-      if (days > 0) {
-        countdownEl.textContent = `${days} DAYS`;
-      } else {
-        countdownEl.textContent =
-          `${hours}h ${minutes}m ${seconds}s`;
-      }
+      countdownEl.textContent =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
     updateCountdown();
